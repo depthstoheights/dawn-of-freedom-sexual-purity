@@ -1,0 +1,1886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Dawn of Freedom - Breaking Sexual Chains | Depths to Heights</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --dawn-dark: #1a1a2e;
+            --dawn-mid: #16213e;
+            --dawn-light: #0f3460;
+            --sunrise-red: #e94560;
+            --sunrise-orange: #ff6b6b;
+            --sunrise-yellow: #ffd93d;
+            --sunrise-gold: #ffb830;
+            --morning-blue: #6bcf7f;
+            --hope-green: #2eb872;
+            --pure-white: #ffffff;
+            --glass-white: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-light: rgba(255, 255, 255, 0.9);
+            --text-dim: rgba(255, 255, 255, 0.6);
+            --shadow-soft: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(180deg, var(--dawn-dark) 0%, var(--dawn-mid) 40%, var(--dawn-light) 70%, var(--sunrise-red) 90%, var(--sunrise-orange) 100%);
+            min-height: 100vh;
+            color: var(--pure-white);
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ff6b6b" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,149.3C960,160,1056,160,1152,138.7C1248,117,1344,75,1392,53.3L1440,32L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
+            background-size: cover;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .container {
+            min-height: 100vh;
+            padding-bottom: 80px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Screens */
+        .screen {
+            display: none;
+            min-height: calc(100vh - 80px);
+            animation: screenFade 0.4s ease;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes screenFade {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Glass Header */
+        .header {
+            background: var(--glass-white);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .back-btn {
+            background: var(--glass-white);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            color: var(--text-light);
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        .header-title h1 {
+            font-size: 1.4em;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .header-subtitle {
+            font-size: 0.85em;
+            color: var(--text-dim);
+            font-weight: 300;
+        }
+
+        .audio-toggle {
+            background: var(--glass-white);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            color: var(--text-light);
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.3s;
+        }
+
+        .audio-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .audio-toggle.playing {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 184, 48, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 184, 48, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 184, 48, 0); }
+        }
+
+        /* Content */
+        .content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Glass Cards */
+        .glass-card {
+            background: var(--glass-white);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.3s;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .glass-card h2 {
+            font-size: 1.5em;
+            font-weight: 300;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        .glass-card h3 {
+            font-size: 1.2em;
+            font-weight: 400;
+            margin: 20px 0 15px;
+            color: var(--sunrise-gold);
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 40px 20px;
+            margin-bottom: 30px;
+        }
+
+        .hero h2 {
+            font-size: 2.5em;
+            font-weight: 200;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--sunrise-yellow), var(--sunrise-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.1em;
+            color: var(--text-dim);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        /* Feature Grid */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, var(--glass-white), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, var(--sunrise-gold) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .feature-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--sunrise-gold);
+        }
+
+        .feature-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .feature-title {
+            font-size: 1.2em;
+            font-weight: 400;
+            margin-bottom: 10px;
+            color: var(--text-light);
+        }
+
+        .feature-desc {
+            font-size: 0.9em;
+            color: var(--text-dim);
+        }
+
+        /* Emergency Button */
+        .emergency-float {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            background: linear-gradient(135deg, var(--sunrise-red), var(--sunrise-orange));
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(233, 69, 96, 0.4);
+            z-index: 999;
+            animation: emergencyPulse 2s infinite;
+        }
+
+        @keyframes emergencyPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .emergency-float:hover {
+            transform: scale(1.1);
+        }
+
+        /* Scripture Banner */
+        .scripture-banner {
+            background: linear-gradient(90deg, var(--sunrise-orange), var(--sunrise-yellow));
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .scripture-text {
+            font-size: 1.2em;
+            font-style: italic;
+            margin-bottom: 10px;
+            color: var(--dawn-dark);
+        }
+
+        .scripture-ref {
+            font-size: 0.9em;
+            color: var(--dawn-mid);
+            font-weight: 600;
+        }
+
+        /* Buttons */
+        .btn {
+            background: linear-gradient(135deg, var(--sunrise-orange), var(--sunrise-gold));
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 30px;
+            font-size: 1em;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+            text-decoration: none;
+            margin: 10px 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        .btn-full {
+            width: 100%;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--morning-blue), var(--hope-green));
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: 2px solid var(--glass-border);
+            color: var(--text-light);
+        }
+
+        .btn-ghost:hover {
+            background: var(--glass-white);
+        }
+
+        /* Freedom Counter */
+        .freedom-counter {
+            background: linear-gradient(135deg, var(--glass-white), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 25px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .counter-number {
+            font-size: 4em;
+            font-weight: 200;
+            background: linear-gradient(90deg, var(--sunrise-yellow), var(--sunrise-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .counter-label {
+            font-size: 1.2em;
+            color: var(--text-dim);
+            margin-bottom: 20px;
+        }
+
+        /* Trigger Entry */
+        .trigger-entry {
+            background: var(--glass-white);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .trigger-time {
+            font-size: 0.9em;
+            color: var(--sunrise-gold);
+            margin-bottom: 5px;
+        }
+
+        .trigger-details {
+            color: var(--text-light);
+        }
+
+        /* Pattern Insights */
+        .pattern-insight {
+            background: linear-gradient(135deg, rgba(255, 184, 48, 0.1), rgba(255, 107, 107, 0.1));
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            border-left: 3px solid var(--sunrise-gold);
+        }
+
+        .insight-title {
+            font-weight: 500;
+            margin-bottom: 10px;
+            color: var(--sunrise-gold);
+        }
+
+        .insight-text {
+            color: var(--text-light);
+            font-size: 0.95em;
+        }
+
+        /* Textarea */
+        .glass-textarea {
+            width: 100%;
+            min-height: 120px;
+            background: var(--glass-white);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 15px;
+            color: var(--text-light);
+            font-family: inherit;
+            font-size: 1em;
+            resize: vertical;
+        }
+
+        .glass-textarea:focus {
+            outline: none;
+            border-color: var(--sunrise-gold);
+        }
+
+        .glass-textarea::placeholder {
+            color: var(--text-dim);
+        }
+
+        /* Select Dropdown */
+        .glass-select {
+            width: 100%;
+            padding: 15px;
+            background: var(--glass-white);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            color: var(--text-light);
+            font-size: 1em;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+
+        .glass-select option {
+            background: var(--dawn-dark);
+            color: var(--text-light);
+        }
+
+        /* Accountability Section */
+        .accountability-card {
+            background: linear-gradient(135deg, rgba(46, 184, 114, 0.1), rgba(107, 207, 127, 0.1));
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 20px;
+            border: 1px solid rgba(46, 184, 114, 0.3);
+            margin-bottom: 20px;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(26, 26, 46, 0.95);
+            z-index: 2000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--dawn-mid);
+            border-radius: 25px;
+            padding: 35px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            border: 1px solid var(--glass-border);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--glass-white);
+            border: 1px solid var(--glass-border);
+            color: var(--text-light);
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--glass-white);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            z-index: 1000;
+        }
+
+        .nav-item {
+            flex: 1;
+            background: none;
+            border: none;
+            color: var(--text-dim);
+            padding: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            color: var(--sunrise-gold);
+        }
+
+        .nav-icon {
+            font-size: 22px;
+            margin-bottom: 4px;
+        }
+
+        .nav-text {
+            font-size: 0.7em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Message */
+        .message {
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            text-align: center;
+            animation: slideIn 0.3s;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .message-success {
+            background: rgba(46, 184, 114, 0.2);
+            border: 1px solid var(--hope-green);
+            color: var(--hope-green);
+        }
+
+        .message-info {
+            background: rgba(255, 184, 48, 0.2);
+            border: 1px solid var(--sunrise-gold);
+            color: var(--sunrise-gold);
+        }
+
+        /* Daily Check-in */
+        .checkin-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .checkin-day {
+            aspect-ratio: 1;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .checkin-day.success {
+            background: linear-gradient(135deg, var(--morning-blue), var(--hope-green));
+        }
+
+        .checkin-day.failed {
+            background: linear-gradient(135deg, var(--sunrise-red), var(--sunrise-orange));
+        }
+
+        .checkin-day.pending {
+            background: var(--glass-white);
+            border: 1px solid var(--glass-border);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero h2 {
+                font-size: 2em;
+            }
+            
+            .counter-number {
+                font-size: 3em;
+            }
+            
+            .checkin-grid {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Audio Element -->
+        <audio id="bgMusic" loop>
+            <source src="data:audio/mpeg;base64,//uQxAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAADAAAGhAAzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzOZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZn///////////////////////////8AAAA5TEFNRTMuMTAwAaoAAAAALgAAACUAJAAAAAAAAAZIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" type="audio/mpeg">
+        </audio>
+
+        <!-- Emergency Button (Always Visible) -->
+        <div class="emergency-float" onclick="app.showEmergency()">🆘</div>
+
+        <!-- HOME SCREEN -->
+        <div id="homeScreen" class="screen active">
+            <div class="header">
+                <div class="header-content">
+                    <div class="header-title">
+                        <h1>Dawn of Freedom</h1>
+                        <div class="header-subtitle">Your journey to sexual wholeness</div>
+                    </div>
+                    <button class="audio-toggle" onclick="app.toggleAudio()" id="audioToggleMain">🔇</button>
+                </div>
+            </div>
+
+            <div class="content">
+                <div class="hero">
+                    <h2 id="dayCounter">Day 1</h2>
+                    <p>Every sunrise is a new beginning. Every moment is a chance to choose freedom.</p>
+                </div>
+
+                <div class="freedom-counter">
+                    <div class="counter-number" id="freedomCounter">0</div>
+                    <div class="counter-label">Hours of Freedom</div>
+                    <button class="btn btn-ghost" onclick="app.resetCounter()">Reset Counter</button>
+                </div>
+
+                <div class="feature-grid">
+                    <div class="feature-card" onclick="app.showScreen('dailyDevotional')">
+                        <div class="feature-icon">📖</div>
+                        <div class="feature-title">Daily Freedom Devotional</div>
+                        <div class="feature-desc">Scripture, teaching, and action steps</div>
+                    </div>
+
+                    <div class="feature-card" onclick="app.showEmergency()">
+                        <div class="feature-icon">🚨</div>
+                        <div class="feature-title">Emergency Help</div>
+                        <div class="feature-desc">When temptation strikes hard</div>
+                    </div>
+
+                    <div class="feature-card" onclick="app.showScreen('triggersJournal')">
+                        <div class="feature-icon">📊</div>
+                        <div class="feature-title">Triggers Journal</div>
+                        <div class="feature-desc">Track patterns, gain awareness</div>
+                    </div>
+
+                    <div class="feature-card" onclick="app.showScreen('godsDesign')">
+                        <div class="feature-icon">✨</div>
+                        <div class="feature-title">God's Design</div>
+                        <div class="feature-desc">Biblical sexuality teaching</div>
+                    </div>
+
+                    <div class="feature-card" onclick="app.showScreen('accountability')">
+                        <div class="feature-icon">🤝</div>
+                        <div class="feature-title">Accountability</div>
+                        <div class="feature-desc">Connect with support</div>
+                    </div>
+
+                    <div class="feature-card" onclick="app.showScreen('victories')">
+                        <div class="feature-icon">🏆</div>
+                        <div class="feature-title">Victories</div>
+                        <div class="feature-desc">Celebrate progress</div>
+                    </div>
+                </div>
+
+                <!-- Weekly Check-in Visual -->
+                <div class="glass-card">
+                    <h2>This Week's Journey</h2>
+                    <div class="checkin-grid" id="weeklyCheckin">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DAILY DEVOTIONAL SCREEN -->
+        <div id="dailyDevotional" class="screen">
+            <div class="header">
+                <div class="header-content">
+                    <button class="back-btn" onclick="app.showScreen('homeScreen')">←</button>
+                    <div class="header-title">
+                        <h1>Daily Freedom Devotional</h1>
+                        <div class="header-subtitle" id="devotionalDate"></div>
+                    </div>
+                    <button class="audio-toggle" onclick="app.toggleAudio()">🔇</button>
+                </div>
+            </div>
+
+            <div class="content">
+                <div class="scripture-banner">
+                    <div class="scripture-text" id="dailyScripture">Loading...</div>
+                    <div class="scripture-ref" id="dailyReference">...</div>
+                </div>
+
+                <div class="glass-card">
+                    <h2 id="devotionalTitle">Grace Greater Than Shame</h2>
+                    <div id="devotionalContent">
+                        <p>Loading today's devotional...</p>
+                    </div>
+                </div>
+
+                <div class="glass-card">
+                    <h2>Today's Truth</h2>
+                    <ul style="line-height: 2; color: var(--text-light);">
+                        <li>Your struggle doesn't define you - Christ does</li>
+                        <li>Every temptation can be overcome (1 Cor 10:13)</li>
+                        <li>God's mercies are new every morning</li>
+                        <li>You are not alone in this battle</li>
+                        <li>Freedom is possible and worth fighting for</li>
+                    </ul>
+                </div>
+
+                <div class="glass-card">
+                    <h2>Action Step</h2>
+                    <div id="actionStep" style="padding: 20px; background: var(--glass-white); border-radius: 15px; margin-top: 15px;">
+                        <p style="font-size: 1.1em;">Loading today's action...</p>
+                    </div>
+                </div>
+
+                <div class="glass-card">
+                    <h2>Prayer</h2>
+                    <p style="font-style: italic; line-height: 1.8;">
+                        Father, thank You for Your grace that covers all my shame. 
+                        Today I choose to walk in the freedom Christ purchased for me. 
+                        When temptation comes, remind me of who I am in You. 
+                        Give me strength to flee what is evil and pursue what is good. 
+                        Help me to see myself as You see me - forgiven, loved, and free. 
+                        In Jesus' name, Amen.
+                    </p>
+                </div>
+
+                <button class="btn btn-success btn-full" onclick="app.markDevotionalComplete()">Mark Complete</button>
+            </div>
+        </div>
+
+        <!-- TRIGGERS JOURNAL SCREEN -->
+        <div id="triggersJournal" class="screen">
+            <div class="header">
+                <div class="header-content">
+                    <button class="back-btn" onclick="app.showScreen('homeScreen')">←</button>
+                    <div class="header-title">
+                        <h1>Triggers Journal</h1>
+                        <div class="header-subtitle">Understanding your patterns</div>
+                    </div>
+                    <button class="audio-toggle" onclick="app.toggleAudio()">🔇</button>
+                </div>
+            </div>
+
+            <div class="content">
+                <div class="glass-card">
+                    <h2>Log a Trigger Event</h2>
+                    
+                    <label style="display: block; margin-bottom: 10px; color: var(--text-dim);">When did it happen?</label>
+                    <input type="datetime-local" id="triggerTime" class="glass-select" style="color: var(--text-light);">
+                    
+                    <label style="display: block; margin: 15px 0 10px; color: var(--text-dim);">What triggered you?</label>
+                    <select id="triggerType" class="glass-select">
+                        <option value="">Select trigger type...</option>
+                        <option value="stress">Stress/Anxiety</option>
+                        <option value="loneliness">Loneliness</option>
+                        <option value="boredom">Boredom</option>
+                        <option value="tired">Tiredness</option>
+                        <option value="anger">Anger/Frustration</option>
+                        <option value="rejection">Rejection/Hurt</option>
+                        <option value="success">Success/Celebration</option>
+                        <option value="visual">Visual Trigger</option>
+                        <option value="memory">Memory/Thought</option>
+                        <option value="other">Other</option>
+                    </select>
+                    
+                    <label style="display: block; margin: 15px 0 10px; color: var(--text-dim);">Describe the situation:</label>
+                    <textarea class="glass-textarea" id="triggerDescription" placeholder="What were you doing? How were you feeling? What led up to this moment?"></textarea>
+                    
+                    <label style="display: block; margin: 15px 0 10px; color: var(--text-dim);">How did you respond?</label>
+                    <select id="triggerResponse" class="glass-select">
+                        <option value="">Select your response...</option>
+                        <option value="resisted">Successfully resisted</option>
+                        <option value="partial">Partially gave in</option>
+                        <option value="failed">Gave in completely</option>
+                        <option value="escaped">Used emergency escape</option>
+                        <option value="reached">Reached out for help</option>
+                    </select>
+                    
+                    <button class="btn btn-full" onclick="app.saveTrigger()">Save Entry</button>
+                    <div id="triggerMessage"></div>
+                </div>
+
+                <div class="glass-card">
+                    <h2>Your Patterns</h2>
+                    <div id="patternInsights">
+                        <!-- Pattern insights will be loaded here -->
+                    </div>
+                </div>
+
+                <div class="glass-card">
+                    <h2>Recent Triggers</h2>
+                    <div id="triggerHistory">
+                        <!-- Trigger history will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- GOD'S DESIGN SCREEN -->
+        <div id="godsDesign" class="screen">
+            <div class="header">
+                <div class="header-content">
+                    <button class="back-btn" onclick="app.showScreen('homeScreen')">←</button>
+                    <div class="header-title">
+                        <h1>God's Design for Sexuality</h1>
+                        <div class="header-subtitle">Biblical truth with grace</div>
+                    </div>
+                    <button class="audio-toggle" onclick="app.toggleAudio()">🔇</button>
+                </div>
+            </div>
+
+            <div class="content">
+                <div class="scripture-banner">
+                    <div class="scripture-text">
+                        "Flee from sexual immorality... You are not your own; you were bought at a price. Therefore honor God with your bodies."
+                    </div>
+                    <div class="scripture-ref">1 Corinthians 6:18-20</div>
+                </div>
+
+                <div class="glass-card">
+                    <h2>God's Beautiful Design</h2>
+                    <p>
+                        Sexuality is God's idea. He created it, called it "very good," and designed it to be a beautiful expression of love within marriage. 
+                        Your sexual desires aren't evil—they're part of how God made you. The challenge is stewarding these powerful desires in ways that honor God and lead to flourishing.
+                    </p>
+                    
+                    <h3>What the Bible Actually Says</h3>
+                    <ul style="line-height: 1.8;">
+                        <li><strong>Sex is good:</strong> Created by God, celebrated in Song of Solomon</li>
+                        <li><strong>Context matters:</strong> Designed for covenant marriage relationship</li>
+                        <li><strong>Purity is possible:</strong> Through God's power, not willpower alone</li>
+                        <li><strong>Grace covers failure:</strong> No sin is beyond God's forgiveness</li>
+                        <li><strong>Identity isn't behavior:</strong> You are defined by Christ, not your struggles</li>
+                    </ul>
+                </div>
+
+                <div class="glass-card">
+                    <h2>Is Masturbation a Sin?</h2>
+                    <p>
+                        The Bible doesn't explicitly mention masturbation, leading to various interpretations among Christians. 
+                        Here's a nuanced biblical perspective:
+                    </p>
+                    
+                    <h3>Consider These Questions:</h3>
+                    <ul style="line-height: 1.8;">
+                        <li><strong>What fuels it?</strong> Lust clearly violates Matthew 5:28</li>
+                        <li><strong>Does it control you?</strong> Don't be mastered by anything (1 Cor 6:12)</li>
+                        <li><strong>How does it affect your relationship with God?</strong></li>
+                        <li><strong>Is it helping or hindering your pursuit of holiness?</strong></li>
+                        <li><strong>What would dwelling on "whatever is pure" look like? (Phil 4:8)</strong></li>
+                    </ul>
+                    
+                    <p style="margin-top: 20px; padding: 20px; background: var(--glass-white); border-radius: 15px;">
+                        <strong>Grace Note:</strong> If you're struggling with this, you're not alone. Many Christians wrestle with these questions. 
+                        Focus less on perfection and more on progression. God sees your heart, knows your struggle, and loves you completely. 
+                        Keep pursuing Him, and let conviction—not condemnation—guide you.
+                    </p>
+                </div>
+
+                <div class="glass-card">
+                    <h2>For Singles: Holy Sexuality</h2>
+                    <p>
+                        Being single doesn't mean being asexual. You're a sexual being whether married or single. 
+                        The question is: How do you honor God with your sexuality in singleness?
+                    </p>
+                    
+                    <ul style="line-height: 1.8;">
+                        <li><strong>Acknowledge desires:</strong> They're not shameful, they're human</li>
+                        <li><strong>Channel energy:</strong> Into creativity, service, exercise, worship</li>
+                        <li><strong>Build intimacy:</strong> Deep friendships provide non-sexual intimacy</li>
+                        <li><strong>Practice presence:</strong> Don't escape into fantasy; live fully now</li>
+                        <li><strong>Prepare for the future:</strong> Whether marriage or continued singleness</li>
+                    </ul>
+                </div>
+
+                <div class="glass-card">
+                    <h2>When You Fall: Grace Abounds</h2>
+                    <p>
+                        You will likely fail. Perhaps repeatedly. This doesn't make you a fake Christian or a hopeless case. 
+                        It makes you human. Here's what to do when you fall:
+                    </p>
+                    
+                    <ol style="line-height: 2; margin-left: 20px;">
+                        <li><strong>Confess immediately:</strong> Don't let shame create distance (1 John 1:9)</li>
+                        <li><strong>Receive grace:</strong> God's love for you hasn't changed</li>
+                        <li><strong>Learn from it:</strong> What led to the fall? What could help next time?</li>
+                        <li><strong>Get back up:</strong> Don't wallow; walk forward</li>
+                        <li><strong>Remember your identity:</strong> You're a saint who sins, not a sinner trying to be good</li>
+                    </ol>
+                    
+                    <div style="margin-top: 20px; padding: 20px; background: linear-gradient(135deg, rgba(46, 184, 114, 0.1), rgba(107, 207, 127, 0.1)); border-radius: 15px;">
+                        <p style="font-size: 1.1em; text-align: center;">
+                            <strong>God still loves you. God still wants you. God still has plans for you.</strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ACCOUNTABILITY SCREEN -->
+        <div id="accountability" class="screen">
+            <div class="header">
+                <div class="header-content">
+                    <button class="back-btn" onclick="app.showScreen('homeScreen')">←</button>
+                    <div class="header-title">
+                        <h1>Accountability</h1>
+                        <div class="header-subtitle">You're not meant to fight alone</div>
+                    </div>
+                    <button class="audio-toggle" onclick="app.toggleAudio()">🔇</button>
+                </div>
+            </div>
+
+            <div class="content">
+                <div class="accountability-card">
+                    <h2>Your Current Streak</h2>
+                    <div style="text-align: center; padding: 20px;">
+                        <div style="font-size: 3em; font-weight: 200;" id="streakDays">0</div>
+                        <div style="color: var(--text-dim);">Days of Freedom</div>
+                    </div>
+                </div>
+
+                <div class="glass-card">
+                    <h2>Accountability Partner</h2>
+                    <p>Having someone who knows your struggle and checks on you regularly dramatically increases your chances of freedom.</p>
+                    
+                    <h3>Add Your Partner's Info</h3>
+                    <input type="text" placeholder="Partner's Name" id="partnerName" class="glass-select" style="margin-bottom: 15px;">
+                    <input type="tel" placeholder="Phone Number" id="partnerPhone" class="glass-select" style="margin-bottom: 15px;">
+                    <input type="email" placeholder="Email (optional)" id="partnerEmail" class="glass-select" style="margin-bottom: 15px;">
+                    
+                    <button class="btn btn-success btn-full" onclick="app.savePartner()">Save Partner Info</button>
+                    <div id="partnerMessage"></div>
+                </div>
+
+                <div class="glass-card">
+                    <h2>Check-In Tools</h2>
+                    <button class="btn btn-full" onclick="app.sendCheckIn()">Send Check-In to Partner</button>
+                    <button class="btn btn-ghost btn-full" onclick="app.scheduleCheckIn()">Schedule Regular Check-Ins</button>
+                    
+                    <h3 style="margin-top: 25px;">Quick Share Messages</h3>
+                    <div style="padding: 15px; background: var(--glass-white); border-radius: 15px; margin: 10px 0;">
+                        <p id="msg1">Day X - Still fighting, still free. Thanks for walking with me.</p>
+                        <button class="btn" onclick="app.copyMessage('msg1')">Copy</button>
+                    </div>
+                    
+                    <div style="padding: 15px; background: var(--glass-white); border-radius: 15px; margin: 10px 0;">
+                        <p id="msg2">Struggling today. Please pray for me and check in later.</p>
+                        <button class="btn" onclick="app.copyMessage('msg2')">Copy</button>
+                    </div>
+                    
+                    <div style="padding: 15px; background: var(--glass-white); border-radius: 15px; margin: 10px 0;">
+                        <p id="msg3">Failed today but not giving up. Reset my counter. Tomorrow is a new day.</p>
+                        <button class="btn" onclick="app.copyMessage('msg3')">Copy</button>
+                    </div>
+                </div>
+
+                <div class="glass-card">
+                    <h2>Accountability Questions</h2>
+                    <p>Ask each other these questions regularly:</p>
+                    <ol style="line-height: 2; margin-left: 20px;">
+                        <li>How many days of freedom this week?</li>
+                        <li>What were your biggest triggers?</li>
+                        <li>When were you most vulnerable?</li>
+                        <li>What helped you resist temptation?</li>
+                        <li>How can I pray for you specifically?</li>
+                        <li>What practical step will you take this week?</li>
+                        <li>Have you been completely honest with me?</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- VICTORIES SCREEN -->
+        <div id="victories" class="screen">
+            <div class="header">
+                <div class="header-content">
+                    <button class="back-btn" onclick="app.showScreen('homeScreen')">←</button>
+                    <div class="header-title">
+                        <h1>Victories</h1>
+                        <div class="header-subtitle">Celebrating every win</div>
+                    </div>
+                    <button class="audio-toggle" onclick="app.toggleAudio()">🔇</button>
+                </div>
+            </div>
+
+            <div class="content">
+                <div class="glass-card">
+                    <h2>Your Progress</h2>
+                    <div style="text-align: center; padding: 20px;">
+                        <div style="font-size: 2em; margin-bottom: 20px;">🏆 Total Days Free: <span id="totalDaysFree">0</span></div>
+                        <div style="font-size: 1.5em; margin-bottom: 20px;">⭐ Longest Streak: <span id="longestStreak">0</span> days</div>
+                        <div style="font-size: 1.3em;">📈 Times You Got Back Up: <span id="resetCount">0</span></div>
+                    </div>
+                </div>
+
+                <div class="glass-card">
+                    <h2>Milestones</h2>
+                    <div class="pattern-insight">
+                        <div class="insight-title">🌅 24 Hours Free</div>
+                        <div class="insight-text">The first day is often the hardest. You did it!</div>
+                    </div>
+                    
+                    <div class="pattern-insight">
+                        <div class="insight-title">📅 7 Days Free</div>
+                        <div class="insight-text">One week of walking in freedom. New patterns forming!</div>
+                    </div>
+                    
+                    <div class="pattern-insight">
+                        <div class="insight-title">📆 30 Days Free</div>
+                        <div class="insight-text">A full month! Your brain is literally rewiring.</div>
+                    </div>
+                    
+                    <div class="pattern-insight">
+                        <div class="insight-title">💪 90 Days Free</div>
+                        <div class="insight-text">Three months of victory. True transformation happening!</div>
+                    </div>
+                </div>
+
+                <div class="glass-card">
+                    <h2>Celebrate Small Wins</h2>
+                    <p>Every victory matters, no matter how small:</p>
+                    <ul style="line-height: 2;">
+                        <li>✓ Closed the browser instead of clicking</li>
+                        <li>✓ Called a friend when tempted</li>
+                        <li>✓ Went to bed instead of staying up</li>
+                        <li>✓ Chose to exercise when stressed</li>
+                        <li>✓ Prayed through an urge</li>
+                        <li>✓ Deleted an app or bookmark</li>
+                        <li>✓ Was honest with someone about your struggle</li>
+                        <li>✓ Got back up after falling</li>
+                    </ul>
+                </div>
+
+                <div class="glass-card">
+                    <h2>Record a Victory</h2>
+                    <textarea class="glass-textarea" id="victoryNote" placeholder="What victory did you experience today? Big or small, write it down..."></textarea>
+                    <button class="btn btn-success btn-full" onclick="app.saveVictory()">Save Victory</button>
+                    <div id="victoryMessage"></div>
+                    
+                    <h3 style="margin-top: 25px;">Recent Victories</h3>
+                    <div id="recentVictories">
+                        <!-- Will be populated -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- INFO MODAL -->
+        <div id="infoModal" class="modal">
+            <div class="modal-content">
+                <button class="modal-close" onclick="app.closeModal('infoModal')">×</button>
+                <h2 style="color: var(--sunrise-gold);">About This App</h2>
+                
+                <h3 style="color: var(--text-light); margin-top: 20px;">What This Provides</h3>
+                <p style="color: var(--text-dim);">
+                    A comprehensive, grace-based support system for overcoming pornography and masturbation addiction. 
+                    This app combines biblical truth, practical tools, and compassionate support without shame or condemnation.
+                </p>
+                
+                <h3 style="color: var(--text-light); margin-top: 20px;">Features</h3>
+                <ul style="line-height: 1.8; color: var(--text-dim);">
+                    <li>Daily devotionals focused on freedom</li>
+                    <li>Emergency help for moments of temptation</li>
+                    <li>Trigger tracking and pattern recognition</li>
+                    <li>Biblical teaching on sexuality</li>
+                    <li>Accountability partner integration</li>
+                    <li>Victory celebration and progress tracking</li>
+                    <li>Weekly visual progress tracker</li>
+                </ul>
+                
+                <h3 style="color: var(--text-light); margin-top: 20px;">Privacy</h3>
+                <p style="color: var(--text-dim);">
+                    All data is stored locally on your device. Nothing is uploaded to servers. 
+                    Your struggle remains completely private.
+                </p>
+                
+                <h3 style="color: var(--text-light); margin-top: 20px;">Install on Your Phone</h3>
+                <p style="color: var(--text-dim);">
+                    <strong>iPhone:</strong> Safari → Share button → Add to Home Screen<br>
+                    <strong>Android:</strong> Chrome → Menu → Add to Home Screen
+                </p>
+                
+                <h3 style="color: var(--text-light); margin-top: 20px;">Remember</h3>
+                <p style="color: var(--sunrise-gold); font-size: 1.1em;">
+                    You are not defined by your struggle. You are loved by God. Freedom is possible.
+                </p>
+                
+                <button class="btn btn-full" onclick="app.closeModal('infoModal')">Close</button>
+            </div>
+        </div>
+
+        <!-- ABOUT MODAL -->
+        <div id="aboutModal" class="modal">
+            <div class="modal-content">
+                <button class="modal-close" onclick="app.closeModal('aboutModal')">×</button>
+                <h2 style="color: var(--sunrise-gold);">Depths to Heights Ministry</h2>
+                
+                <p style="color: var(--text-light);"><strong>Made by Justin</strong></p>
+                <p style="color: var(--text-dim);">
+                    Created for those fighting for sexual purity, believing that grace—not shame—leads to lasting freedom.
+                </p>
+                
+                <h3 style="color: var(--text-light); margin-top: 20px;">Our Mission</h3>
+                <p style="color: var(--text-dim);">
+                    To provide shame-free, biblically-grounded support for overcoming sexual addiction. 
+                    We believe the Gospel offers real power for real change.
+                </p>
+                
+                <h3 style="color: var(--text-light); margin-top: 20px;">Core Beliefs</h3>
+                <ul style="line-height: 1.8; color: var(--text-dim);">
+                    <li>Your struggle doesn't define you</li>
+                    <li>Grace is greater than shame</li>
+                    <li>Freedom is possible through Christ</li>
+                    <li>Community accelerates healing</li>
+                    <li>Every day is a new beginning</li>
+                </ul>
+                
+                <p style="color: var(--text-light); margin-top: 20px;">
+                    <strong>Website:</strong> <a href="https://depthstoheights.org" target="_blank" style="color: var(--sunrise-gold);">depthstoheights.org</a>
+                </p>
+                <p style="color: var(--text-light);">
+                    <strong>Email:</strong> <a href="mailto:depthstoheights@gmail.com" style="color: var(--sunrise-gold);">depthstoheights@gmail.com</a>
+                </p>
+                
+                <button class="btn btn-full" onclick="window.open('https://www.paypal.com/donate/?hosted_button_id=8GRE7B8C3TP2U', '_blank')">Support This Ministry</button>
+                
+                <p style="margin-top: 20px; font-style: italic; text-align: center; color: var(--text-dim);">
+                    "Therefore, there is now no condemnation for those who are in Christ Jesus." - Romans 8:1
+                </p>
+            </div>
+        </div>
+
+        <!-- BOTTOM NAVIGATION -->
+        <div class="bottom-nav">
+            <button class="nav-item active" onclick="app.navigate('homeScreen')">
+                <span class="nav-icon">🏠</span>
+                <span class="nav-text">Home</span>
+            </button>
+            <button class="nav-item" onclick="app.navigate('dailyDevotional')">
+                <span class="nav-icon">📖</span>
+                <span class="nav-text">Daily</span>
+            </button>
+            <button class="nav-item" onclick="app.navigate('triggersJournal')">
+                <span class="nav-icon">📊</span>
+                <span class="nav-text">Triggers</span>
+            </button>
+            <button class="nav-item" onclick="app.openModal('infoModal')">
+                <span class="nav-icon">ℹ️</span>
+                <span class="nav-text">Info</span>
+            </button>
+            <button class="nav-item" onclick="app.openModal('aboutModal')">
+                <span class="nav-icon">✨</span>
+                <span class="nav-text">About</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const app = {
+            audioPlaying: false,
+            lastReset: localStorage.getItem('lastReset') || new Date().toISOString(),
+            triggers: JSON.parse(localStorage.getItem('triggers') || '[]'),
+            victories: JSON.parse(localStorage.getItem('victories') || '[]'),
+            partner: JSON.parse(localStorage.getItem('partner') || '{}'),
+            totalDays: parseInt(localStorage.getItem('totalDays') || '0'),
+            longestStreak: parseInt(localStorage.getItem('longestStreak') || '0'),
+            resetCount: parseInt(localStorage.getItem('resetCount') || '0'),
+            weeklyCheckins: JSON.parse(localStorage.getItem('weeklyCheckins') || '{}'),
+            devotionalsRead: JSON.parse(localStorage.getItem('devotionalsRead') || '[]'),
+            
+            devotionals: [
+                {
+                    scripture: "No temptation has overtaken you except what is common to mankind. And God is faithful; he will not let you be tempted beyond what you can bear.",
+                    reference: "1 Corinthians 10:13",
+                    title: "You Can Overcome This",
+                    content: `Every person who has found freedom started exactly where you are. They felt the same shame, fought the same battles, experienced the same failures. But they discovered a secret: God's faithfulness is greater than our weakness. Today's temptations are not unique to you - they're common to humanity. This means you're not abnormal, you're not beyond help, and you're definitely not alone. More importantly, God has already provided the way of escape. Your job isn't to be strong enough; it's to be humble enough to take the exit He provides.`,
+                    action: "Identify your most vulnerable time today and plan a specific 'escape route' - someone to call, somewhere to go, or something to do instead."
+                },
+                {
+                    scripture: "Therefore, there is now no condemnation for those who are in Christ Jesus, because through Christ Jesus the law of the Spirit who gives life has set you free from the law of sin and death.",
+                    reference: "Romans 8:1-2",
+                    title: "No Condemnation, Only Freedom",
+                    content: `Shame is not your friend. It whispers lies that keep you trapped in cycles of sin. But God speaks a different word over you: NO CONDEMNATION. Not 'less condemnation' or 'condemnation until you get your act together' - but NO condemnation. Right now, in the midst of your struggle, God sees you through the lens of Christ's perfection. This doesn't give license to sin; it gives power to overcome. When you truly grasp that God isn't disappointed in you, that He's actually for you, everything changes. You stop hiding and start healing.`,
+                    action: "Write down three lies shame tells you, then counter each with a truth from God's Word about who you are in Christ."
+                },
+                {
+                    scripture: "Create in me a pure heart, O God, and renew a steadfast spirit within me.",
+                    reference: "Psalm 51:10",
+                    title: "The Prayer for Purity",
+                    content: `David prayed this after his sexual sin with Bathsheba. Notice he didn't pray for more willpower or better circumstances. He asked God to CREATE something new in him. You can't manufacture purity through self-effort any more than you can create a new heart. This is God's work in you. But notice also that David asked for a 'steadfast' spirit - one that keeps going even after failure. Purity isn't perfection; it's persistence. It's getting back up every time you fall and saying, 'God, create in me what I cannot create in myself.'`,
+                    action: "Set three phone alarms today. When they go off, stop and pray Psalm 51:10, asking God to create purity in you."
+                },
+                {
+                    scripture: "Flee from sexual immorality. All other sins a person commits are outside the body, but whoever sins sexually, sins against their own body.",
+                    reference: "1 Corinthians 6:18",
+                    title: "The Power of Flight",
+                    content: `Sometimes the most spiritual thing you can do is run. Joseph literally ran from Potiphar's wife, leaving his coat behind. He didn't try to resist; he fled. There's no shame in running from temptation - there's wisdom. You're not weak for avoiding triggers; you're smart. Don't test your strength against temptation. Don't see how close you can get to the fire without getting burned. Flee. Change the channel. Close the browser. Leave the room. Go for a run. Call a friend. Your legs can take you away from temptation faster than your willpower can resist it.`,
+                    action: "Delete one app, block one website, or change one habit that puts you in temptation's path. Do it now, not later."
+                },
+                {
+                    scripture: "For we do not have a high priest who is unable to empathize with our weaknesses, but we have one who has been tempted in every way, just as we are—yet he did not sin.",
+                    reference: "Hebrews 4:15",
+                    title: "Jesus Understands",
+                    content: `Jesus was tempted 'in every way.' Think about that. Every way includes sexual temptation. Jesus, as a fully human man, experienced sexual desire and temptation. He understands the battle you're fighting - not theoretically, but experientially. When you pray about your struggle, you're not shocking Him or disgusting Him. You're talking to someone who gets it, who felt it, who overcame it. And because He overcame, He can help you overcome. You're not bringing your struggle to a distant, disapproving deity, but to a compassionate high priest who knows exactly how hard this is.`,
+                    action: "Have an honest conversation with Jesus about your struggle. Hold nothing back. He already knows and isn't shocked."
+                },
+                {
+                    scripture: "I can do all this through him who gives me strength.",
+                    reference: "Philippians 4:13",
+                    title: "Strength Beyond Yourself",
+                    content: `This verse isn't about accomplishing your dreams or winning the game. Paul wrote it from prison, talking about contentment in all circumstances. It's about having strength for the struggle. You CAN do this - not through your determination, not through your willpower, but through Him. Every time you feel weak, remember: His strength is available. Every time you want to give up, remember: He hasn't given up on you. The same power that raised Christ from the dead lives in you. That's the power available for your battle against porn.`,
+                    action: "Identify your weakest moment in the last week. Now plan how to access God's strength next time - through prayer, Scripture, worship, or calling someone."
+                },
+                {
+                    scripture: "But he said to me, 'My grace is sufficient for you, for my power is made perfect in weakness.'",
+                    reference: "2 Corinthians 12:9",
+                    title: "Perfect Power in Weakness",
+                    content: `Your weakness isn't a liability; it's an opportunity for God's power. Paul begged God to remove his 'thorn,' but God said no - My grace is enough. Maybe you've begged God to remove your sexual desires, to make this easy, to take away the struggle. But what if He's saying, 'My grace is sufficient'? What if your weakness keeps you dependent on Him? What if your struggle is actually the place where His power shows up most? This doesn't mean God wants you to stay addicted. It means He wants you to overcome through His power, not yours.`,
+                    action: "Admit your complete weakness to God. Then ask Him to display His power in that exact place of weakness today."
+                }
+            ],
+            
+            init() {
+                this.updateFreedomCounter();
+                this.loadDailyDevotional();
+                this.loadTriggerHistory();
+                this.loadPatternInsights();
+                this.updateStreakDisplay();
+                this.loadVictoryStats();
+                this.loadWeeklyCheckin();
+                this.loadRecentVictories();
+                
+                // Update counter every minute
+                setInterval(() => this.updateFreedomCounter(), 60000);
+                
+                // Update day counter
+                document.getElementById('dayCounter').textContent = `Day ${this.getDayCount()}`;
+                
+                // Update first message with actual day count
+                document.getElementById('msg1').textContent = `Day ${this.getDayCount()} - Still fighting, still free. Thanks for walking with me.`;
+            },
+            
+            toggleAudio() {
+                const audio = document.getElementById('bgMusic');
+                const buttons = document.querySelectorAll('.audio-toggle');
+                
+                if (this.audioPlaying) {
+                    audio.pause();
+                    buttons.forEach(btn => btn.textContent = '🔇');
+                    buttons.forEach(btn => btn.classList.remove('playing'));
+                } else {
+                    // Note: In production, replace with actual audio
+                    this.showMessage('', 'Background music feature (actual audio would play in production)', 'info');
+                    buttons.forEach(btn => btn.textContent = '🔊');
+                    buttons.forEach(btn => btn.classList.add('playing'));
+                }
+                this.audioPlaying = !this.audioPlaying;
+            },
+            
+            showScreen(screenId) {
+                document.querySelectorAll('.screen').forEach(screen => {
+                    screen.classList.remove('active');
+                });
+                document.getElementById(screenId).classList.add('active');
+                window.scrollTo(0, 0);
+                this.updateNavigation(screenId);
+                
+                // Load screen-specific content
+                if (screenId === 'dailyDevotional') {
+                    this.loadDailyDevotional();
+                } else if (screenId === 'triggersJournal') {
+                    this.loadTriggerHistory();
+                    this.loadPatternInsights();
+                } else if (screenId === 'victories') {
+                    this.loadVictoryStats();
+                    this.loadRecentVictories();
+                } else if (screenId === 'accountability') {
+                    this.updateStreakDisplay();
+                    this.loadPartnerInfo();
+                }
+            },
+            
+            navigate(screenId) {
+                this.showScreen(screenId);
+            },
+            
+            updateNavigation(screenId) {
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                const navMap = {
+                    'homeScreen': 0,
+                    'dailyDevotional': 1,
+                    'triggersJournal': 2
+                };
+                
+                if (navMap[screenId] !== undefined) {
+                    document.querySelectorAll('.nav-item')[navMap[screenId]].classList.add('active');
+                }
+            },
+            
+            openModal(modalId) {
+                document.getElementById(modalId).classList.add('active');
+            },
+            
+            closeModal(modalId) {
+                document.getElementById(modalId).classList.remove('active');
+            },
+            
+            getDayCount() {
+                const start = new Date(this.lastReset);
+                const now = new Date();
+                const diff = now - start;
+                return Math.floor(diff / (1000 * 60 * 60 * 24)) + 1;
+            },
+            
+            updateFreedomCounter() {
+                const hours = Math.floor((new Date() - new Date(this.lastReset)) / (1000 * 60 * 60));
+                const counter = document.getElementById('freedomCounter');
+                if (counter) {
+                    counter.textContent = hours;
+                }
+                
+                // Update streak display
+                const days = this.getDayCount();
+                const streakDisplay = document.getElementById('streakDays');
+                if (streakDisplay) {
+                    streakDisplay.textContent = days;
+                }
+            },
+            
+            resetCounter() {
+                const message = 'Are you resetting your counter? Remember: falling doesn\'t make you a failure. Getting back up makes you a warrior.';
+                if (confirm(message)) {
+                    const currentStreak = this.getDayCount();
+                    
+                    // Update longest streak if needed
+                    if (currentStreak > this.longestStreak) {
+                        this.longestStreak = currentStreak;
+                        localStorage.setItem('longestStreak', this.longestStreak);
+                    }
+                    
+                    // Update total days and reset count
+                    this.totalDays += currentStreak;
+                    this.resetCount++;
+                    localStorage.setItem('totalDays', this.totalDays);
+                    localStorage.setItem('resetCount', this.resetCount);
+                    
+                    // Reset the counter
+                    this.lastReset = new Date().toISOString();
+                    localStorage.setItem('lastReset', this.lastReset);
+                    this.updateFreedomCounter();
+                    
+                    // Update day counter
+                    document.getElementById('dayCounter').textContent = 'Day 1';
+                    
+                    // Reset weekly checkin
+                    this.weeklyCheckins = {};
+                    localStorage.setItem('weeklyCheckins', JSON.stringify(this.weeklyCheckins));
+                    this.loadWeeklyCheckin();
+                    
+                    this.showMessage('', 'Counter reset. You\'re not starting over, you\'re starting stronger.', 'info');
+                }
+            },
+            
+            loadDailyDevotional() {
+                const today = new Date().getDay();
+                const devotional = this.devotionals[today];
+                
+                // Update date
+                const dateElement = document.getElementById('devotionalDate');
+                if (dateElement) {
+                    dateElement.textContent = new Date().toLocaleDateString('en-US', { 
+                        weekday: 'long', 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                    });
+                }
+                
+                // Update content
+                document.getElementById('dailyScripture').textContent = devotional.scripture;
+                document.getElementById('dailyReference').textContent = devotional.reference;
+                document.getElementById('devotionalTitle').textContent = devotional.title;
+                document.getElementById('devotionalContent').innerHTML = `<p>${devotional.content}</p>`;
+                document.getElementById('actionStep').innerHTML = `<p style="font-size: 1.1em;">${devotional.action}</p>`;
+            },
+            
+            markDevotionalComplete() {
+                const today = new Date().toDateString();
+                if (!this.devotionalsRead.includes(today)) {
+                    this.devotionalsRead.push(today);
+                    localStorage.setItem('devotionalsRead', JSON.stringify(this.devotionalsRead));
+                    this.showMessage('', 'Devotional completed! Well done feeding your spirit today.', 'success');
+                    
+                    // Update weekly checkin
+                    this.weeklyCheckins[today] = 'success';
+                    localStorage.setItem('weeklyCheckins', JSON.stringify(this.weeklyCheckins));
+                    this.loadWeeklyCheckin();
+                }
+            },
+            
+            loadWeeklyCheckin() {
+                const container = document.getElementById('weeklyCheckin');
+                if (!container) return;
+                
+                const days = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+                const today = new Date();
+                const startOfWeek = new Date(today);
+                startOfWeek.setDate(today.getDate() - today.getDay());
+                
+                let html = '';
+                for (let i = 0; i < 7; i++) {
+                    const checkDate = new Date(startOfWeek);
+                    checkDate.setDate(startOfWeek.getDate() + i);
+                    const dateStr = checkDate.toDateString();
+                    
+                    const status = this.weeklyCheckins[dateStr] || 'pending';
+                    const isToday = dateStr === today.toDateString();
+                    const isFuture = checkDate > today;
+                    
+                    // Make past and current days clickable
+                    const isClickable = !isFuture;
+                    
+                    html += `
+                        <div class="checkin-day ${status} ${isToday ? 'today' : ''}" 
+                             style="${isToday ? 'border: 2px solid var(--sunrise-gold);' : ''} ${isClickable ? 'cursor: pointer;' : 'opacity: 0.5;'}"
+                             ${isClickable ? `onclick="app.toggleDayStatus('${dateStr}')"` : ''}>
+                            ${status === 'success' ? '✓' : status === 'failed' ? '✗' : days[i]}
+                        </div>
+                    `;
+                }
+                
+                container.innerHTML = html;
+                
+                // Show instructions if empty
+                if (Object.keys(this.weeklyCheckins).length === 0) {
+                    container.innerHTML += '<p style="grid-column: 1/-1; text-align: center; color: var(--text-dim); font-size: 0.9em; margin-top: 10px;">Tap days to mark success ✓ or failure ✗</p>';
+                }
+            },
+            
+            toggleDayStatus(dateStr) {
+                const currentStatus = this.weeklyCheckins[dateStr] || 'pending';
+                let newStatus;
+                
+                // Cycle through: pending -> success -> failed -> pending
+                if (currentStatus === 'pending') {
+                    newStatus = 'success';
+                } else if (currentStatus === 'success') {
+                    newStatus = 'failed';
+                } else {
+                    newStatus = 'pending';
+                    delete this.weeklyCheckins[dateStr];
+                }
+                
+                if (newStatus !== 'pending') {
+                    this.weeklyCheckins[dateStr] = newStatus;
+                }
+                
+                localStorage.setItem('weeklyCheckins', JSON.stringify(this.weeklyCheckins));
+                this.loadWeeklyCheckin();
+                
+                // Update today's status in main counter if it's today
+                const today = new Date().toDateString();
+                if (dateStr === today && newStatus === 'failed') {
+                    this.showMessage('', 'Remember: Falling doesn\'t define you. Getting back up does.', 'info');
+                } else if (dateStr === today && newStatus === 'success') {
+                    this.showMessage('', 'Well done! You\'re choosing freedom today!', 'success');
+                }
+            },
+            
+            showEmergency() {
+                const modal = document.createElement('div');
+                modal.className = 'modal active';
+                modal.style.background = 'rgba(233, 69, 96, 0.95)';
+                modal.innerHTML = `
+                    <div class="modal-content" style="text-align: center;">
+                        <h2 style="color: var(--sunrise-gold); font-size: 2em; margin-bottom: 30px;">EMERGENCY ESCAPE</h2>
+                        
+                        <div class="glass-card" style="background: rgba(255,255,255,0.1); margin-bottom: 20px;">
+                            <h3 style="color: var(--text-light); margin-bottom: 15px;">Step 1: BREATHE</h3>
+                            <p style="font-size: 1.2em; color: var(--text-light);">Take 5 deep breaths with me...</p>
+                            <div style="font-size: 3em; margin: 20px 0; color: var(--sunrise-yellow);" id="breathCount">5</div>
+                        </div>
+                        
+                        <div class="glass-card" style="background: rgba(255,255,255,0.1); margin-bottom: 20px;">
+                            <h3 style="color: var(--text-light); margin-bottom: 15px;">Step 2: PRAY ALOUD</h3>
+                            <p style="font-style: italic; line-height: 1.8; font-size: 1.1em; color: var(--text-light);">
+                                "God, I need You RIGHT NOW. This temptation feels overwhelming. 
+                                I can't do this alone. Give me Your strength. Help me flee. 
+                                Remind me who I am in You. I choose freedom. I choose You. 
+                                In Jesus' name, Amen."
+                            </p>
+                        </div>
+                        
+                        <div class="glass-card" style="background: rgba(255,255,255,0.1); margin-bottom: 20px;">
+                            <h3 style="color: var(--text-light); margin-bottom: 15px;">Step 3: REDIRECT NOW</h3>
+                            <button class="btn btn-full" onclick="window.open('https://www.youtube.com/results?search_query=worship+music+playlist', '_blank')">Play Worship Music</button>
+                            <button class="btn btn-success btn-full" onclick="app.callAccountability()">Call Accountability Partner</button>
+                            <button class="btn btn-ghost btn-full" onclick="app.goOutside()">Get Outside Now</button>
+                        </div>
+                        
+                        <div style="margin-top: 30px;">
+                            <button class="btn btn-ghost" onclick="this.parentElement.parentElement.parentElement.remove()">I'm Safe Now</button>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+                
+                // Start breath countdown
+                let count = 5;
+                const breathCounter = document.getElementById('breathCount');
+                const breathInterval = setInterval(() => {
+                    count--;
+                    if (count >= 0) {
+                        breathCounter.textContent = count;
+                    } else {
+                        breathCounter.textContent = '✓';
+                        clearInterval(breathInterval);
+                    }
+                }, 2000);
+            },
+            
+            callAccountability() {
+                if (this.partner.phone) {
+                    window.location.href = `tel:${this.partner.phone}`;
+                } else {
+                    this.showMessage('', 'Add your accountability partner\'s phone number in the Accountability section first.', 'info');
+                    this.showScreen('accountability');
+                }
+            },
+            
+            goOutside() {
+                const message = 'GET UP NOW!\n\n1. Put on shoes\n2. Walk out the door\n3. Walk/run for 10 minutes\n4. Don\'t come back until the urge passes\n\nYour body in motion defeats temptation. GO!';
+                this.showMessage('', message.replace(/\n/g, '<br>'), 'info');
+            },
+            
+            saveTrigger() {
+                const trigger = {
+                    time: document.getElementById('triggerTime').value || new Date().toISOString(),
+                    type: document.getElementById('triggerType').value,
+                    description: document.getElementById('triggerDescription').value,
+                    response: document.getElementById('triggerResponse').value,
+                    timestamp: new Date().toISOString()
+                };
+                
+                if (!trigger.type) {
+                    this.showMessage('triggerMessage', 'Please select a trigger type', 'info');
+                    return;
+                }
+                
+                this.triggers.unshift(trigger);
+                localStorage.setItem('triggers', JSON.stringify(this.triggers));
+                
+                // Clear form
+                document.getElementById('triggerType').value = '';
+                document.getElementById('triggerDescription').value = '';
+                document.getElementById('triggerResponse').value = '';
+                
+                this.showMessage('triggerMessage', 'Trigger logged. Self-awareness is the first step to freedom.', 'success');
+                this.loadTriggerHistory();
+                this.loadPatternInsights();
+            },
+            
+            loadTriggerHistory() {
+                const container = document.getElementById('triggerHistory');
+                if (!container) return;
+                
+                if (this.triggers.length === 0) {
+                    container.innerHTML = '<p style="color: var(--text-dim); text-align: center;">No triggers logged yet. Start tracking to identify patterns.</p>';
+                    return;
+                }
+                
+                let html = '';
+                this.triggers.slice(0, 5).forEach(trigger => {
+                    const date = new Date(trigger.time);
+                    html += `
+                        <div class="trigger-entry">
+                            <div class="trigger-time">${date.toLocaleString()}</div>
+                            <div class="trigger-details">
+                                <strong>Trigger:</strong> ${trigger.type}<br>
+                                ${trigger.description ? `<strong>Details:</strong> ${trigger.description}<br>` : ''}
+                                <strong>Response:</strong> ${trigger.response || 'Not recorded'}
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                container.innerHTML = html;
+            },
+            
+            loadPatternInsights() {
+                const container = document.getElementById('patternInsights');
+                if (!container) return;
+                
+                if (this.triggers.length < 3) {
+                    container.innerHTML = '<p style="color: var(--text-dim);">Log at least 3 triggers to see pattern insights.</p>';
+                    return;
+                }
+                
+                // Analyze patterns
+                const typeCount = {};
+                const timeOfDay = { morning: 0, afternoon: 0, evening: 0, night: 0 };
+                
+                this.triggers.forEach(trigger => {
+                    // Count trigger types
+                    if (trigger.type) {
+                        typeCount[trigger.type] = (typeCount[trigger.type] || 0) + 1;
+                    }
+                    
+                    // Analyze time patterns
+                    const hour = new Date(trigger.time).getHours();
+                    if (hour < 6 || hour >= 22) timeOfDay.night++;
+                    else if (hour < 12) timeOfDay.morning++;
+                    else if (hour < 18) timeOfDay.afternoon++;
+                    else timeOfDay.evening++;
+                });
+                
+                // Find most common trigger
+                const mostCommon = Object.entries(typeCount).sort((a, b) => b[1] - a[1])[0];
+                
+                // Find most vulnerable time
+                const vulnerableTime = Object.entries(timeOfDay).sort((a, b) => b[1] - a[1])[0];
+                
+                let html = '';
+                
+                if (mostCommon) {
+                    html += `
+                        <div class="pattern-insight">
+                            <div class="insight-title">Most Common Trigger</div>
+                            <div class="insight-text">Your #1 trigger is <strong>${mostCommon[0]}</strong> (${mostCommon[1]} times). Plan specific strategies for this trigger.</div>
+                        </div>
+                    `;
+                }
+                
+                if (vulnerableTime) {
+                    html += `
+                        <div class="pattern-insight">
+                            <div class="insight-title">Most Vulnerable Time</div>
+                            <div class="insight-text">You're most vulnerable during the <strong>${vulnerableTime[0]}</strong>. Build extra guardrails for this time.</div>
+                        </div>
+                    `;
+                }
+                
+                // Success rate
+                const successCount = this.triggers.filter(t => t.response === 'resisted' || t.response === 'escaped').length;
+                const successRate = Math.round((successCount / this.triggers.length) * 100);
+                
+                html += `
+                    <div class="pattern-insight">
+                        <div class="insight-title">Success Rate</div>
+                        <div class="insight-text">You've successfully resisted ${successRate}% of logged temptations. Every resistance makes you stronger!</div>
+                    </div>
+                `;
+                
+                container.innerHTML = html;
+            },
+            
+            loadPartnerInfo() {
+                if (this.partner.name) {
+                    document.getElementById('partnerName').value = this.partner.name || '';
+                    document.getElementById('partnerPhone').value = this.partner.phone || '';
+                    document.getElementById('partnerEmail').value = this.partner.email || '';
+                }
+            },
+            
+            savePartner() {
+                const partner = {
+                    name: document.getElementById('partnerName').value,
+                    phone: document.getElementById('partnerPhone').value,
+                    email: document.getElementById('partnerEmail').value
+                };
+                
+                if (!partner.name) {
+                    this.showMessage('partnerMessage', 'Please enter at least a name', 'info');
+                    return;
+                }
+                
+                this.partner = partner;
+                localStorage.setItem('partner', JSON.stringify(partner));
+                this.showMessage('partnerMessage', 'Partner info saved. You\'re not alone in this fight!', 'success');
+            },
+            
+            sendCheckIn() {
+                if (!this.partner.phone && !this.partner.email) {
+                    this.showMessage('', 'Please add your accountability partner\'s contact info first.', 'info');
+                    return;
+                }
+                
+                const message = `Day ${this.getDayCount()} Check-In: Still fighting, still free. Current streak: ${this.getDayCount()} days. Thanks for keeping me accountable!`;
+                
+                if (this.partner.phone) {
+                    window.location.href = `sms:${this.partner.phone}&body=${encodeURIComponent(message)}`;
+                } else if (this.partner.email) {
+                    window.location.href = `mailto:${this.partner.email}?subject=Accountability Check-In&body=${encodeURIComponent(message)}`;
+                }
+            },
+            
+            scheduleCheckIn() {
+                this.showMessage('', 'Set a daily reminder on your phone to check in with your accountability partner. Consistency is key to freedom!', 'info');
+            },
+            
+            copyMessage(msgId) {
+                const message = document.getElementById(msgId).textContent;
+                navigator.clipboard.writeText(message).then(() => {
+                    const button = document.getElementById(msgId).nextElementSibling;
+                    button.textContent = 'Copied!';
+                    setTimeout(() => {
+                        button.textContent = 'Copy';
+                    }, 2000);
+                }).catch(() => {
+                    this.showMessage('', 'Copy failed. Please select and copy manually.', 'info');
+                });
+            },
+            
+            updateStreakDisplay() {
+                const days = this.getDayCount();
+                const streakElement = document.getElementById('streakDays');
+                if (streakElement) {
+                    streakElement.textContent = days;
+                }
+            },
+            
+            saveVictory() {
+                const note = document.getElementById('victoryNote').value;
+                
+                if (!note) {
+                    this.showMessage('victoryMessage', 'Please describe your victory', 'info');
+                    return;
+                }
+                
+                const victory = {
+                    date: new Date().toISOString(),
+                    note: note
+                };
+                
+                this.victories.unshift(victory);
+                localStorage.setItem('victories', JSON.stringify(this.victories));
+                
+                document.getElementById('victoryNote').value = '';
+                this.showMessage('victoryMessage', 'Victory recorded! Every win matters!', 'success');
+                this.loadRecentVictories();
+            },
+            
+            loadVictoryStats() {
+                document.getElementById('totalDaysFree').textContent = this.totalDays;
+                document.getElementById('longestStreak').textContent = this.longestStreak;
+                document.getElementById('resetCount').textContent = this.resetCount;
+            },
+            
+            loadRecentVictories() {
+                const container = document.getElementById('recentVictories');
+                if (!container) return;
+                
+                if (this.victories.length === 0) {
+                    container.innerHTML = '<p style="color: var(--text-dim);">No victories recorded yet. Start celebrating your wins!</p>';
+                    return;
+                }
+                
+                let html = '';
+                this.victories.slice(0, 5).forEach(victory => {
+                    const date = new Date(victory.date);
+                    html += `
+                        <div style="padding: 15px; background: var(--glass-white); border-radius: 10px; margin: 10px 0;">
+                            <div style="font-size: 0.9em; color: var(--sunrise-gold); margin-bottom: 5px;">
+                                ${date.toLocaleDateString()}
+                            </div>
+                            <div style="color: var(--text-light);">
+                                ${victory.note}
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                container.innerHTML = html;
+            },
+            
+            showMessage(elementId, message, type) {
+                if (elementId) {
+                    const element = document.getElementById(elementId);
+                    if (element) {
+                        element.innerHTML = `<div class="message message-${type}">${message}</div>`;
+                        setTimeout(() => {
+                            element.innerHTML = '';
+                        }, 5000);
+                    }
+                } else {
+                    // Create toast
+                    const toast = document.createElement('div');
+                    toast.className = `message message-${type}`;
+                    toast.innerHTML = message;
+                    toast.style.position = 'fixed';
+                    toast.style.top = '100px';
+                    toast.style.left = '50%';
+                    toast.style.transform = 'translateX(-50%)';
+                    toast.style.zIndex = '3000';
+                    toast.style.minWidth = '300px';
+                    toast.style.maxWidth = '80%';
+                    document.body.appendChild(toast);
+                    setTimeout(() => toast.remove(), 5000);
+                }
+            }
+        };
+        
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', () => app.init());
+    </script>
+</body>
+</html>
